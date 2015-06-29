@@ -1,12 +1,21 @@
 package com.rootnext.jurassicpark.model;
 
+import javax.persistence.*;
+
 /**
  * Created by sanjoy on 6/29/15.
  */
+@Entity
 public class Cage {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private Integer maxCapacity;
     private PowerStatus powerStatus;
+
+    public Cage(){
+
+    }
 
     public Cage(Integer id, Integer maxCapacity, PowerStatus powerStatus) {
         this.id = id;
@@ -30,6 +39,7 @@ public class Cage {
         this.maxCapacity = maxCapacity;
     }
 
+    @Enumerated(EnumType.STRING)
     public PowerStatus getPowerStatus() {
         return powerStatus;
     }

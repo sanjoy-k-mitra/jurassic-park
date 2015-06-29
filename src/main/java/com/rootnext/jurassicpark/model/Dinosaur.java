@@ -1,13 +1,24 @@
 package com.rootnext.jurassicpark.model;
 
+import javax.persistence.*;
+
 /**
  * Created by sanjoy on 6/29/15.
  */
+@Entity
 public class Dinosaur {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
+    @ManyToOne(targetEntity = Species.class)
     private Species species;
+    @ManyToOne(targetEntity = Cage.class)
     private Cage cage;
+
+    public Dinosaur(){
+
+    }
 
     public Dinosaur(Integer id, String name) {
         this.id = id;
