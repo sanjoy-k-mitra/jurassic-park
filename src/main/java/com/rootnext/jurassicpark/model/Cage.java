@@ -1,6 +1,7 @@
 package com.rootnext.jurassicpark.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by sanjoy on 6/29/15.
@@ -12,6 +13,8 @@ public class Cage {
     private Integer id;
     private Integer maxCapacity;
     private PowerStatus powerStatus;
+    @OneToMany(targetEntity = Dinosaur.class)
+    private Set<Dinosaur> dinosaurs;
 
     public Cage(){
 
@@ -46,5 +49,13 @@ public class Cage {
 
     public void setPowerStatus(PowerStatus powerStatus) {
         this.powerStatus = powerStatus;
+    }
+
+    public Set<Dinosaur> getDinosaurs() {
+        return dinosaurs;
+    }
+
+    public void setDinosaurs(Set<Dinosaur> dinosaurs) {
+        this.dinosaurs = dinosaurs;
     }
 }

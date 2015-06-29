@@ -4,7 +4,11 @@ import com.rootnext.jurassicpark.model.CageRepository;
 import com.rootnext.jurassicpark.model.Dinosaur;
 import com.rootnext.jurassicpark.model.DinosaurRepository;
 import com.rootnext.jurassicpark.model.SpeciesRepository;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -20,26 +24,29 @@ public class DinosaurController {
     @Autowired
     CageRepository cageRepository;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET,produces = "application/json")
     public Iterable<Dinosaur> list(){
         return dinosaurRepository.findAll();
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET,produces = "application/json")
     public Dinosaur get(@PathVariable("id") Integer id) {
         return dinosaurRepository.findOne(id);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public Dinosaur create(@RequestParam(value = "name") String name, @RequestParam(value = "speciesId") Integer speciesId, @RequestParam(value = "cageId", required = false) Integer cageId) {
-        Dinosaur dinosaur = new Dinosaur(null, name);
-        dinosaur.setSpecies(speciesRepository.findOne(speciesId));
-        dinosaur.setCage(cageRepository.findOne(cageId));
+    @RequestMapping(method = RequestMethod.POST,produces = "application/json", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public Dinosaur create(Dinosaur dinosaur) {
         dinosaurRepository.save(dinosaur);
         return dinosaur;
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST,produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Dinosaur createFromJson(@RequestBody Dinosaur dinosaur) {
+        dinosaurRepository.save(dinosaur);
+        return dinosaur;
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.POST,produces = "application/json", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public Dinosaur update(@PathVariable(value = "id") Integer id, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "speciesId", required = false) Integer speciesId, @RequestParam(value = "cageId", required = false) Integer cageId) {
         Dinosaur dinosaur = dinosaurRepository.findOne(id);
         if(name != null){
@@ -56,7 +63,28 @@ public class DinosaurController {
         return dinosaur;
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT, produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Dinosaur update(@PathVariable(value = "id") Integer id, @RequestBody String jsonString) throws ParseException{
+        JSONObject jsonObject = (JSONObject) new JSONParser().parse(jsonString);
+        Dinosaur dinosaur = dinosaurRepository.findOne(id);
+        String name = (String)jsonObject.get("name");
+        Integer speciesId = (Integer)jsonObject.get("species");
+        Integer cageId = (Integer)jsonObject.get("cage");
+        if(name != null){
+            dinosaur.setName(name);
+        }
+        if(speciesId != null){
+            dinosaur.setSpecies(speciesRepository.findOne(speciesId));
+        }
+        if(cageId != null){
+            dinosaur.setCage(cageRepository.findOne(cageId));
+        }
+
+        dinosaurRepository.save(dinosaur);
+        return dinosaur;
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE,produces = "application/json")
     public Dinosaur delete(@PathVariable(value = "id") Integer id){
         Dinosaur dinosaur = dinosaurRepository.findOne(id);
         dinosaurRepository.delete(id);
