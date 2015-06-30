@@ -11,7 +11,7 @@ public class Dinosaur {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String name;
-    @ManyToOne(targetEntity = Species.class)
+    @ManyToOne(targetEntity = Species.class, optional = false)
     private Species species;
     @ManyToOne(targetEntity = Cage.class)
     private Cage cage;
@@ -20,9 +20,10 @@ public class Dinosaur {
 
     }
 
-    public Dinosaur(Integer id, String name) {
-        this.id = id;
+    public Dinosaur(String name, Species species, Cage cage) {
         this.name = name;
+        this.species = species;
+        this.cage = cage;
     }
 
     public Integer getId() {

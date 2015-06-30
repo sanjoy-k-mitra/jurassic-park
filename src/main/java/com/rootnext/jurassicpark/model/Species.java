@@ -20,8 +20,7 @@ public class Species {
 
     }
 
-    public Species(Integer id, String name, DinosaurType dinosaurType) {
-        this.id = id;
+    public Species(String name, DinosaurType dinosaurType) {
         this.name = name;
         this.dinosaurType = dinosaurType;
     }

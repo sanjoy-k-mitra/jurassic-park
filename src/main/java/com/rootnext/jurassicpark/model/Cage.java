@@ -1,6 +1,9 @@
 package com.rootnext.jurassicpark.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -11,19 +14,22 @@ public class Cage {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @Column(nullable = false)
     private Integer maxCapacity;
+    @Column(nullable = false)
     private PowerStatus powerStatus;
-    @OneToMany(targetEntity = Dinosaur.class)
+    @OneToMany(targetEntity = Dinosaur.class, mappedBy = "cage")
+    @JsonIgnore
     private Set<Dinosaur> dinosaurs;
 
     public Cage(){
-
+        dinosaurs = new HashSet<Dinosaur>();
     }
 
-    public Cage(Integer id, Integer maxCapacity, PowerStatus powerStatus) {
-        this.id = id;
+    public Cage(Integer maxCapacity, PowerStatus powerStatus) {
         this.maxCapacity = maxCapacity;
         this.powerStatus = powerStatus;
+        dinosaurs = new HashSet<Dinosaur>();
     }
 
     public Integer getId() {
@@ -57,5 +63,9 @@ public class Cage {
 
     public void setDinosaurs(Set<Dinosaur> dinosaurs) {
         this.dinosaurs = dinosaurs;
+    }
+
+    public Integer getDinosaurContained(){
+        return dinosaurs.size();
     }
 }
