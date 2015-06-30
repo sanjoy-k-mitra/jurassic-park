@@ -68,8 +68,10 @@ public class DinosaurController {
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(jsonString);
         Dinosaur dinosaur = dinosaurRepository.findOne(id);
         String name = (String)jsonObject.get("name");
-        Long speciesId = (Long)jsonObject.get("species");
-        Long cageId = (Long)jsonObject.get("cage");
+        JSONObject species = (JSONObject)jsonObject.get("species");
+        JSONObject cage = (JSONObject)jsonObject.get("cage");
+        Long speciesId = species!=null ? (Long)species.get("id") : null;
+        Long cageId = cage!= null ? (Long)cage.get("id") : null;
         if(name != null){
             dinosaur.setName(name);
         }

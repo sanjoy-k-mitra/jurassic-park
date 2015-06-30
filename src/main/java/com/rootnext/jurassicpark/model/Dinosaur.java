@@ -20,12 +20,6 @@ public class Dinosaur {
 
     }
 
-    public Dinosaur(String name, Species species, Cage cage) {
-        this.name = name;
-        this.species = species;
-        this.cage = cage;
-    }
-
     public Long getId() {
         return id;
     }
@@ -57,6 +51,9 @@ public class Dinosaur {
     public void setCage(Cage cage) throws Exception{
         if(cage.getPowerStatus() == PowerStatus.DOWN){
             throw new Exception("Dinosaur can not be assigned to Power Down Cage");
+        }
+        if(cage.getMaxCapacity() <= cage.getDinosaurContained()){
+            throw new Exception("Cage is Already Full");
         }
         if(cage.getDinosaurs().size() > 0 && (cage.getDinosaurs().get(0).getSpecies().getDinosaurType() == DinosaurType.Carnivores || this.species.getDinosaurType() == DinosaurType.Carnivores)){
             if(cage.getDinosaurs().get(0).species != this.species){
