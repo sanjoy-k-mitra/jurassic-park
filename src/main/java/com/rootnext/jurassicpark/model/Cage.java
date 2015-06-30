@@ -3,7 +3,9 @@ package com.rootnext.jurassicpark.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,30 +15,30 @@ import java.util.Set;
 public class Cage {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
     @Column(nullable = false)
     private Integer maxCapacity;
     @Column(nullable = false)
     private PowerStatus powerStatus;
     @OneToMany(targetEntity = Dinosaur.class, mappedBy = "cage")
     @JsonIgnore
-    private Set<Dinosaur> dinosaurs;
+    private List<Dinosaur> dinosaurs;
 
     public Cage(){
-        dinosaurs = new HashSet<Dinosaur>();
+        dinosaurs = new ArrayList<>();
     }
 
     public Cage(Integer maxCapacity, PowerStatus powerStatus) {
         this.maxCapacity = maxCapacity;
         this.powerStatus = powerStatus;
-        dinosaurs = new HashSet<Dinosaur>();
+        dinosaurs = new ArrayList<Dinosaur>();
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -57,11 +59,11 @@ public class Cage {
         this.powerStatus = powerStatus;
     }
 
-    public Set<Dinosaur> getDinosaurs() {
+    public List<Dinosaur> getDinosaurs() {
         return dinosaurs;
     }
 
-    public void setDinosaurs(Set<Dinosaur> dinosaurs) {
+    public void setDinosaurs(List<Dinosaur> dinosaurs) {
         this.dinosaurs = dinosaurs;
     }
 

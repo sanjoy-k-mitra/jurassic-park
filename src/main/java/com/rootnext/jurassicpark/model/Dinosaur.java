@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class Dinosaur {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
     private String name;
     @ManyToOne(targetEntity = Species.class, optional = false)
     private Species species;
@@ -26,11 +26,11 @@ public class Dinosaur {
         this.cage = cage;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -54,7 +54,15 @@ public class Dinosaur {
         return cage;
     }
 
-    public void setCage(Cage cage) {
+    public void setCage(Cage cage) throws Exception{
+        if(cage.getPowerStatus() == PowerStatus.DOWN){
+            throw new Exception("Dinosaur can not be assigned to Power Down Cage");
+        }
+        if(cage.getDinosaurs().size() > 0 && (cage.getDinosaurs().get(0).getSpecies().getDinosaurType() == DinosaurType.Carnivores || this.species.getDinosaurType() == DinosaurType.Carnivores)){
+            if(cage.getDinosaurs().get(0).species != this.species){
+                throw new Exception("Incompatable DinosaurType");
+            }
+        }
         this.cage = cage;
     }
 }

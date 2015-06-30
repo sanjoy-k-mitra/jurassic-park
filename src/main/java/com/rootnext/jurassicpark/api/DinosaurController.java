@@ -30,7 +30,7 @@ public class DinosaurController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET,produces = "application/json")
-    public Dinosaur get(@PathVariable("id") Integer id) {
+    public Dinosaur get(@PathVariable("id") Long id) {
         return dinosaurRepository.findOne(id);
     }
 
@@ -47,7 +47,7 @@ public class DinosaurController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.POST,produces = "application/json", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public Dinosaur update(@PathVariable(value = "id") Integer id, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "speciesId", required = false) Integer speciesId, @RequestParam(value = "cageId", required = false) Integer cageId) {
+    public Dinosaur update(@PathVariable(value = "id") Long id, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "speciesId", required = false) Long speciesId, @RequestParam(value = "cageId", required = false) Long cageId) throws Exception{
         Dinosaur dinosaur = dinosaurRepository.findOne(id);
         if(name != null){
             dinosaur.setName(name);
@@ -64,12 +64,12 @@ public class DinosaurController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT, produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Dinosaur update(@PathVariable(value = "id") Integer id, @RequestBody String jsonString) throws ParseException{
+    public Dinosaur update(@PathVariable(value = "id") Long id, @RequestBody String jsonString) throws Exception{
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(jsonString);
         Dinosaur dinosaur = dinosaurRepository.findOne(id);
         String name = (String)jsonObject.get("name");
-        Integer speciesId = (Integer)jsonObject.get("species");
-        Integer cageId = (Integer)jsonObject.get("cage");
+        Long speciesId = (Long)jsonObject.get("species");
+        Long cageId = (Long)jsonObject.get("cage");
         if(name != null){
             dinosaur.setName(name);
         }
@@ -85,7 +85,7 @@ public class DinosaurController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE,produces = "application/json")
-    public Dinosaur delete(@PathVariable(value = "id") Integer id){
+    public Dinosaur delete(@PathVariable(value = "id") Long id){
         Dinosaur dinosaur = dinosaurRepository.findOne(id);
         dinosaurRepository.delete(id);
         return dinosaur;

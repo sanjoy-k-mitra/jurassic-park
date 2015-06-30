@@ -25,7 +25,7 @@ public class CageController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET, produces = "application/json")
-    public Cage get(@PathVariable("id") Integer id) {
+    public Cage get(@PathVariable("id") Long id) {
         return cageRepository.findOne(id);
     }
 
@@ -42,7 +42,7 @@ public class CageController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.POST,produces = "application/json", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public Cage update(@PathVariable(value = "id") Integer id, @RequestParam(value = "maxCapacity", required = false) Integer maxCapacity, @RequestParam(value = "powerStatus", required = false) String powerStatus) {
+    public Cage update(@PathVariable(value = "id") Long id, @RequestParam(value = "maxCapacity", required = false) Integer maxCapacity, @RequestParam(value = "powerStatus", required = false) String powerStatus) {
         Cage cage = cageRepository.findOne(id);
         if (maxCapacity != null) {
             cage.setMaxCapacity(maxCapacity);
@@ -55,7 +55,7 @@ public class CageController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT,produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Cage updateFromJson(@PathVariable(value = "id") Integer id, @RequestBody(required = true) String jsonString) throws ParseException {
+    public Cage updateFromJson(@PathVariable(value = "id") Long id, @RequestBody(required = true) String jsonString) throws ParseException {
         Cage cage = cageRepository.findOne(id);
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(jsonString);
         Integer maxCapacity = (Integer) jsonObject.get("maxCapacity");
@@ -71,7 +71,7 @@ public class CageController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE,produces = "application/json")
-    public Cage delete(@PathVariable(value = "id") Integer id) {
+    public Cage delete(@PathVariable(value = "id") Long id) {
         Cage cage = cageRepository.findOne(id);
         cageRepository.delete(id);
         return cage;

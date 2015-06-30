@@ -12,7 +12,7 @@ import javax.persistence.Id;
 public class Species {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Long id;
     private String name;
     private DinosaurType dinosaurType;
 
@@ -25,11 +25,11 @@ public class Species {
         this.dinosaurType = dinosaurType;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
