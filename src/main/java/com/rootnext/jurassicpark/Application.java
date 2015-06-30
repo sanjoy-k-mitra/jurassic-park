@@ -35,6 +35,14 @@ public class Application implements CommandLineRunner{
             speciesRepository.save(new Species("Stegosaurus", DinosaurType.Herbivores));
             speciesRepository.save(new Species("Ankylosaurus", DinosaurType.Herbivores));
             speciesRepository.save(new Species("Triceratops", DinosaurType.Herbivores));
+
+            cageRepository.save(new Cage(5, PowerStatus.ACTIVE));
+            cageRepository.save(new Cage(5, PowerStatus.DOWN));
+
+            dinosaurRepository.save(new Dinosaur("AAA", speciesRepository.findOne(1l), cageRepository.findOne(1l)));
+            dinosaurRepository.save(new Dinosaur("BBB", speciesRepository.findOne(1l), cageRepository.findOne(1l)));
         }
+
+
     }
 }

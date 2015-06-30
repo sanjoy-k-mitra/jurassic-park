@@ -35,13 +35,28 @@ public class DinosaurController {
     }
 
     @RequestMapping(method = RequestMethod.POST,produces = "application/json", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public Dinosaur create(Dinosaur dinosaur) {
+    public Dinosaur create(@RequestParam(value = "name")String name, @RequestParam(value = "species")Long speciesId, @RequestParam(value = "cage")Long cageId) throws Exception{
+        Dinosaur dinosaur = new Dinosaur();
+        dinosaur.setName(name);
+        dinosaur.setSpecies(speciesRepository.findOne(speciesId));
+        dinosaur.setCage(cageRepository.findOne(cageId));
         dinosaurRepository.save(dinosaur);
         return dinosaur;
     }
 
     @RequestMapping(method = RequestMethod.POST,produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Dinosaur createFromJson(@RequestBody Dinosaur dinosaur) {
+    public Dinosaur createFromJson(@RequestBody String jsonString) throws Exception{
+        JSONObject jsonObject = (JSONObject) new JSONParser().parse(jsonString);
+        Dinosaur dinosaur = new Dinosaur();
+        String name = (String)jsonObject.get("name");
+        JSONObject species = (JSONObject)jsonObject.get("species");
+        JSONObject cage = (JSONObject)jsonObject.get("cage");
+        Long speciesId = species!=null ? (Long)species.get("id") : null;
+        Long cageId = cage!= null ? (Long)cage.get("id") : null;
+
+        dinosaur.setName(name);
+        dinosaur.setSpecies(speciesRepository.findOne(speciesId));
+        dinosaur.setCage(cageRepository.findOne(cageId));
         dinosaurRepository.save(dinosaur);
         return dinosaur;
     }

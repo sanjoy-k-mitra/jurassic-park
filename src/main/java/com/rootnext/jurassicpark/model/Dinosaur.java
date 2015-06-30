@@ -21,6 +21,13 @@ public class Dinosaur {
 
     }
 
+    public Dinosaur(String name, Species species, Cage cage) throws Exception{
+        this.name = name;
+        this.species = species;
+//        validateCage(cage);
+        this.cage = cage;
+    }
+
     public Long getId() {
         return id;
     }
@@ -49,7 +56,7 @@ public class Dinosaur {
         return cage;
     }
 
-    public void setCage(Cage cage) throws Exception{
+    private void  validateCage(Cage cage) throws Exception{
         if(cage.getPowerStatus() == PowerStatus.DOWN){
             throw new Exception("Dinosaur can not be assigned to Power Down Cage");
         }
@@ -61,6 +68,10 @@ public class Dinosaur {
                 throw new Exception("Incompatable DinosaurType");
             }
         }
+    }
+
+    public void setCage(Cage cage) throws Exception{
+        validateCage(cage);
         this.cage = cage;
     }
 }

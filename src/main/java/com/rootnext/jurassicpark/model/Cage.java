@@ -71,6 +71,10 @@ public class Cage {
     }
 
     public Integer getDinosaurContained(){
-        return dinosaurs.size();
+        try{
+            return dinosaurs.size();
+        }catch (Exception e){
+            return 0;
+        }
     }
 }
