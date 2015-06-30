@@ -10,6 +10,7 @@ public class Dinosaur {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(nullable = false)
     private String name;
     @ManyToOne(targetEntity = Species.class, optional = false)
     private Species species;

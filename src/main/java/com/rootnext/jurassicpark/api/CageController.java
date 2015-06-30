@@ -42,7 +42,7 @@ public class CageController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.POST,produces = "application/json", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public Cage update(@PathVariable(value = "id") Long id, @RequestParam(value = "maxCapacity", required = false) Integer maxCapacity, @RequestParam(value = "powerStatus", required = false) String powerStatus) {
+    public Cage update(@PathVariable(value = "id") Long id, @RequestParam(value = "maxCapacity", required = false) Integer maxCapacity, @RequestParam(value = "powerStatus", required = false) String powerStatus) throws Exception{
         Cage cage = cageRepository.findOne(id);
         if (maxCapacity != null) {
             cage.setMaxCapacity(maxCapacity);
@@ -55,7 +55,7 @@ public class CageController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT,produces = "application/json", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Cage updateFromJson(@PathVariable(value = "id") Long id, @RequestBody(required = true) String jsonString) throws ParseException {
+    public Cage updateFromJson(@PathVariable(value = "id") Long id, @RequestBody(required = true) String jsonString) throws Exception {
         Cage cage = cageRepository.findOne(id);
         JSONObject jsonObject = (JSONObject) new JSONParser().parse(jsonString);
         Integer maxCapacity = (Integer) jsonObject.get("maxCapacity");
